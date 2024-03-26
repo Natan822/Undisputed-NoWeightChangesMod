@@ -13,7 +13,7 @@ DWORD WINAPI threadFunc(LPVOID lpParam) {
 		GameAssemblyBaseAddress = getDllBaseAddress(undisputedProcessId, L"GameAssembly.dll");
 	}
 	hook_location = (unsigned char*)(GameAssemblyBaseAddress + 0x1DB5EE4);
-	hUndisputedProcess = OpenProcess(PROCESS_ALL_ACCESS, 0, undisputedProcessId);
+	hUndisputedProcess = OpenProcess(PROCESS_CREATE_THREAD | PROCESS_QUERY_INFORMATION | PROCESS_VM_OPERATION | PROCESS_VM_WRITE | PROCESS_VM_READ, 0, undisputedProcessId);
 
 	VirtualProtectEx(hUndisputedProcess, (void*)hook_location, 4, PAGE_EXECUTE_READWRITE, &oldProtect);
 
