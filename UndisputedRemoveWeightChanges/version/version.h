@@ -1,5 +1,7 @@
 #pragma once
 #include <Windows.h>
+#include <cstdio>
+
 
 typedef DWORD(__stdcall* fn_GetFileVersionInfoSizeA)(
 	LPCSTR  lptstrFilename,
@@ -24,7 +26,12 @@ extern "C" DWORD GetFileVersionInfoSizeA_FN(
 	LPCSTR  lptstrFilename,
 	LPDWORD lpdwHandle)
 {
-	HMODULE original_dll = LoadLibrary(L"C:\\Windows\\System32\\version.dll");
+	CHAR sys32Path[MAX_PATH];
+	GetSystemDirectoryA(sys32Path, MAX_PATH);
+	char dllPath[MAX_PATH];
+	sprintf_s(dllPath, "%s\\version.dll", sys32Path);
+
+	HMODULE original_dll = LoadLibraryA(dllPath);
 	fn_GetFileVersionInfoSizeA original_func = (fn_GetFileVersionInfoSizeA)GetProcAddress(original_dll, "GetFileVersionInfoSizeA");
 
 	return original_func(lptstrFilename, lpdwHandle);
@@ -36,7 +43,12 @@ extern "C"  BOOL VerQueryValueA_FN(
 	LPVOID * lplpBuffer,
 	PUINT   puLen)
 {
-	HMODULE original_dll = LoadLibrary(L"C:\\Windows\\System32\\version.dll");
+	CHAR sys32Path[MAX_PATH];
+	GetSystemDirectoryA(sys32Path, MAX_PATH);
+	char dllPath[MAX_PATH];
+	sprintf_s(dllPath, "%s\\version.dll", sys32Path);
+
+	HMODULE original_dll = LoadLibraryA(dllPath);
 	fn_VerQueryValueA original_func = (fn_VerQueryValueA)GetProcAddress(original_dll, "VerQueryValueA");
 
 	return original_func(pBlock, lpSubBlock, lplpBuffer, puLen);
@@ -48,7 +60,12 @@ extern "C" BOOL GetFileVersionInfoA_FN(
 	DWORD  dwLen,
 	LPVOID lpData)
 {
-	HMODULE original_dll = LoadLibrary(L"C:\\Windows\\System32\\version.dll");
+	CHAR sys32Path[MAX_PATH];
+	GetSystemDirectoryA(sys32Path, MAX_PATH);
+	char dllPath[MAX_PATH];
+	sprintf_s(dllPath, "%s\\version.dll", sys32Path);
+
+	HMODULE original_dll = LoadLibraryA(dllPath);
 	fn_GetFileVersionInfoA original_func = (fn_GetFileVersionInfoA)GetProcAddress(original_dll, "GetFileVersionInfoA");
 
 	return original_func(lptstrFilename, dwHandle, dwLen, lpData);
